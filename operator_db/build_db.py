@@ -146,11 +146,15 @@ def main():
     nations = set()
     races = set()
     groups = set()
+    new = []
     with open('./operator_db/character_table.json', 'r', encoding="utf-8") as f:
         char_data = json.load(f)
 
         with open('./operator_db/handbook_info_table.json', 'r', encoding="utf-8") as ff:
             profile_data = json.load(ff)["handbookDict"]
+
+            with open('./operator_db/operator_db_old.json', 'r', encoding="utf-8") as fff:
+                old_operators = json.load(fff)
 
     operators = {}
 
@@ -198,6 +202,10 @@ def main():
             "infected": infected,
         }
 
+        if not name in old_operators:
+            print("New operator: " + name)
+            new.append(name)
+
         races.add(race)
         groups.add(group)
         nations.add(nation)
@@ -212,7 +220,9 @@ def main():
     print(sorted(races))
     print(str(len(groups)) + ' unique groups')
     print(sorted(groups))
-    print(str(len(operators)) + ' operators')
+    print(str(len(new)) + ' new operators')
+    print(sorted(new))
+    print(str(len(old_operators)) + ' old operators vs ' + str(len(operators)) + ' new operators')
 
     missing_alias = []
     for alias in aliases:
